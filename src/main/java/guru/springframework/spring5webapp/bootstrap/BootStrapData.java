@@ -1,5 +1,6 @@
 package guru.springframework.spring5webapp.bootstrap;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import guru.springframework.spring5webapp.domain.Author;
 import guru.springframework.spring5webapp.domain.Book;
 import guru.springframework.spring5webapp.domain.Publisher;
@@ -34,26 +35,35 @@ public class BootStrapData implements CommandLineRunner {
 
         publisherRepository.save(publisher);
 
-        System.out.println("Started in Bootstrap");
-        System.out.println("Publissher Count: " + publisherRepository.count());
-
         Author eric = new Author("Eric", "Evans");
         Book ddd = new Book("Domain Driver Design", "123123");
         eric.getBook().add(ddd);
         ddd.getAuthors().add(eric);
 
+        ddd.setPublisher(publisher);
+        publisher.getBooks().add(ddd);
+
         authorRepository.save(eric);
         bookRepository.save(ddd);
+        publisherRepository.save(publisher);
+
 
         Author rod = new Author("Rod", "Johnson");
         Book noEJB = new Book("J2EE Developer without EJB", "393459459");
         rod.getBook().add(noEJB);
         noEJB.getAuthors().add(rod);
 
+        noEJB.setPublisher(publisher);
+        publisher.getBooks().add(noEJB);
+
         authorRepository.save(rod);
         bookRepository.save(noEJB);
+        publisherRepository.save(publisher);
 
-        System.out.println("Number od Book: " + bookRepository.count());
+        System.out.println("Started in Bootstrap");
+        System.out.println("Publissher Count: " + publisherRepository.count());
+        System.out.println("Number of Publisher: " + publisherRepository.count());
+        System.out.println("Number of Book: " + bookRepository.count());
 
     }
 }
